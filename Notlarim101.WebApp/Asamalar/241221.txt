@@ -1,0 +1,19 @@
+﻿Editprofile view oluşturduk.
+Önce Beginformu oluşturuyoruz.
+{enctype="multipart/home/form-data" })) //sadece post işleminde zorunlu bir kalıp enctype yazmazsak gerçekleştirmeyecektir.
+sonrasında bu sayfanın divlerini oluşturmaya başladık. ve col-md classlarını doldurmaya başladık.
+@Html.HiddenFor(model=>model.Id) amacımız post ederken ıd yi de göndermek.
+ @Html.ValidationSummary(false) Formda oluşabilecek ve arka planda oluşabilecek hataları gösteriyor.(Sql tarafında olupta kod tarafında yakaladığımız hataları gösteriyor.)Kısaca false yapınca bütün hataları kontrol ediyor.
+ Bunun içerisine bir form-group oluşturuyoruz.
+  @Html.LabelFor // benim database gönderdiğimiz entityleri classları (NotlarimUser daki Name Surname gibi isimkeri verecek.)  o classlarda verdiğimiz isimleri buraya taşımamızda görev alacak
+  EditorFor incele !!!!
+  Aynı groupu surname user name için gibi dğeleri için ypaıyoruz.
+  Sadece şifre için HtmlAttributes içerisnde birde tpye="password ekledik."
+  Son olarak label foru sildik ve oraya offset yapısını kullandık.EditorFor u da sildik oraya Actionlink yapısı koyduk ve bunu buton haline getirdik.
+  Col-md-3 5 4 şeklinde grupladık.
+  Homecontroller da EditProfile get 'inin içerisinde CurrentUserId yi çektik.Önce currentUser 'a session daki giriş bilgilerini aldık.
+  sonra aynı yerde hata kontrolü yaptık.
+  Content içerisinde ValidationStyle oluşuturp içierisin doldurduk.
+  Bunu EditProfile ekledik. Çünkü sayfanın yanındakı kategori kısmı alttakı ve usttekı kısımlarıngitmesini istemiyoruz.Bundan dolayı yeni bir css oluşturduk.
+  Sonra EditProfilin post kısmıı dolduruyoruz.
+  İçerisinde UpdateProfil yazdık güncelleme için ama bunu notlarımusermanager içerisinde generate ettik.Burada metod içerisinde ıd email ve username kontrolllerini yapıyoruz.Sonrasında diğer kontrolleri tekrar yaptıktan sonra Bilgileri dolduruyoruz.Ve resim kontrolü yapıyoruz.

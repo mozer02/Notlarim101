@@ -1,0 +1,176 @@
+﻿@using Notlarim101.Entity
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Shop Homepage - Start Bootstrap Template</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <!-- Bootstrap icons-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="~/Content/styles.css" rel="stylesheet" />
+</head>
+<body>
+    @{
+        NotlarimUser user = null;
+        if (Session["login"] != null)
+        {
+            user = Session["login"] as NotlarimUser;
+        }
+    }
+
+
+
+    <!-- Navigation-->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container px-1 px-lg-2">
+            <a class="navbar-brand" href="/Home/Index">NOTLARIM - 101</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                    @if (user != null)
+                    {
+                        @*<li class="nav-item"><a class="nav-link active" aria-current="page" href="#!"><i class="bi bi-wrench"></i> Yonetim</a></li>*@
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-wrench"></i> Yonetim</a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="/Note/Create">Not Ekle</a></li>
+                                <li role="separator" class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="/Note/Index">Notlarim</a></li>
+                                <li><a class="dropdown-item" href="/Note/MyLikedNotes">Begendiklerim</a></li>
+                                @if (user.IsAdmin == true)
+                                {
+                                    <li role="separator" class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="/Category/Create">Kategori Ekle</a></li>
+                                    <li><a class="dropdown-item" href="/Category/Index">Kategoriler</a></li>
+                                    <li role="separator" class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="/NotlarimUser/Create">Kullanici Ekle</a></li>
+                                    <li><a class="dropdown-item" href="/NotlarimUser/Index">Kullanicilar</a></li>
+                                }
+                            </ul>
+                        </li>
+
+                    }
+
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="#!"><i class="bi bi-suit-heart-fill"></i> En Beğenilenler</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#!"><i class="bi bi-pencil-square"></i> Son Yazılar</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#!"><i class="bi bi-info-circle-fill"></i> Hakkımızda</a></li>
+                    @*<li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-currency-dollar"></i> Shop</a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="#!">All Products</a></li>
+                                <li><hr class="dropdown-divider" /></li>
+                                <li><a class="dropdown-item" href="#!">Popular Items</a></li>
+                                <li><a class="dropdown-item" href="#!">New Arrivals</a></li>
+                            </ul>
+                        </li>*@
+                </ul>
+                @*<form class="d-flex">
+                        <button class="btn btn-outline-dark" type="submit">
+                            <i class="bi-cart-fill me-1"></i>
+                            <i class="bi bi-currency-dollar"></i>Cart
+                            <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+                        </button>
+                    </form>*@
+                <ul class="navbar-nav mb-2 mb-lg-0 ms-lg-4">
+                    @if (user == null)
+                    {
+                        <li class="nav-item"><a class="nav-link active" href="/Home/Login"><i class="fas fa-sign-in-alt"></i> Giriş</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="/Home/Register"><i class="fas fa-user-plus"></i> Üye Ol</a></li>
+                    }
+                    else
+                    {
+                        @*<li class="nav-item"><a class="nav-link active" href="/Home/ShowProfile"><i class="fas fa-user-check"></i> @user.Username</a></li>
+
+                            <li class="nav-item"><a class="nav-link active" href="/Home/LogOut"><i class="fas fa-sign-out-alt"></i> Çıkış</a></li>*@
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="/Home/ShowProfile" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-wrench"></i> @user.Username</a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="/Home/ShowProfile">Profil Goster</a></li>
+                                <li role="separator" class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="/Home/EditProfile">Profil Duzenle</a></li>
+                                <li><a class="dropdown-item" href="/Home/DeleteProfile" onclick="return confirm('Hesabınızı silmek istediğinize emin misiniz?');">Profil Sil</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item"><a class="nav-link active" href="/Home/LogOut"><i class="fas fa-sign-out-alt"></i> Çıkış</a></li>
+                    }
+
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+    <!-- Header-->
+    <header class="bg-dark py-5">
+        <div class="container px-4 px-lg-5 my-5">
+            <div class="text-center text-white">
+                <h1 class="display-4 fw-bolder">Shop in style</h1>
+                <p class="lead fw-normal text-white-50 mb-0">With this shop hompeage template</p>
+            </div>
+        </div>
+    </header>
+
+    <div class="container-fluid body-content">
+        <div class="row">  
+            <div class="col-md-2" id="category2">
+                @Html.Partial("_PartialCategories")
+            </div>
+            <div class="col-md-10" id="category3">
+                @RenderBody()
+            </div>
+        </div>
+
+        <hr />
+    </div>
+    <!-- Footer-->
+    <footer class="py-5 bg-dark" id="footer1">
+        <div class="row m-0">
+            <div class="container col-lg-4 text-white text-center">
+                <h5>Site Haritasi</h5>
+                <hr />
+                <p class="m-0 text-center text-white">
+                    <a href="#">Hakkimizda</a><br />
+                    <a href="#">En Beğenilenler</a><br />
+                    <a href="#">Son Yazılanlar</a>
+                </p>
+            </div>
+            <div class="container col-lg-4 text-center text-white">
+                <h5>Notlarim - 101</h5>
+                <hr />
+                <p class="m-0 text-center text-white">Copyright &copy; Your Website @DateTime.Now.Year</p>
+            </div>
+            <div class="container col-lg-4 text-white text-center">
+                <h5>
+                    <strong>E-Bülten Üyeliği</strong>
+                </h5>
+                <hr />
+                <div class="col-md-10 ms-4">
+                    <p>
+                        Fusce vel sapien elit in malesuada semper mi.
+                    </p>
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="e-posta adresiniz" />
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary" type="submit">
+                                Gönder
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </footer>
+    <!-- Bootstrap core JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Core theme JS-->
+    <script src="~/Scripts/scripts.js"></script>
+</body>
+</html>

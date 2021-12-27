@@ -1,0 +1,85 @@
+﻿@model Notlarim101.Entity.NotlarimUser
+
+@{
+    ViewBag.Title = "Profili Düzenle";
+}
+<link href="~/Content/ValidationStyle.css" rel="stylesheet" />
+<h2>EditProfile</h2>
+
+<div class="container">
+    <div class="row">
+        <h2>@ViewBag.Title</h2>
+        <hr />
+    </div>
+    <div class="row">
+        @using (Html.BeginForm("EditProfile", "Home", FormMethod.Post, new { enctype = "multipart/home/form-data" })) //sadece post işleminde zorunlu bir kalıp enctype yazmazsak gerçekleştirmeyecektir.
+        {
+        <div class="form-horizontal d-flex justify-content-center">
+            <div class="col-md-3 mx-3"> 
+                <img src="~/images/@Model.ProfileImageFilename" alt="" width="128" height="128" class="rounded-circle" />
+                @Html.HiddenFor(model=>model.ProfileImageFilename)
+                <br /><br />
+                <input type="file" id="ProfileImage" name="ProfileImage" class="form-control" />
+                <span>&nbsp;</span>
+                <span>
+                    <i>Lütfen jpg,jpeg veya png formati kullanın.</i>
+                </span>
+            </div>
+            <div class="col-md-5">
+                @Html.ValidationSummary(false)
+                @Html.HiddenFor(model => model.Id)
+                @*@Html.HiddenFor(model => model.IsActive)
+                @Html.HiddenFor(model => model.IsAdmin)
+                @Html.HiddenFor(model => model.ModifiedOn)
+                @Html.HiddenFor(model => model.ModifiedUsername)
+                @Html.HiddenFor(model => model.CreatedOn)
+                @Html.HiddenFor(model => model.ActivateGuid)*@
+
+
+                <div class="row my-2">
+                    @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "form-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.Name, new { @htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+                <div class="row my-2">
+                    @Html.LabelFor(model => model.Surname, htmlAttributes: new { @class = "form-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.Surname, new { @htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+                <div class="row my-2">
+                    @Html.LabelFor(model => model.Username, htmlAttributes: new { @class = "form-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.Username, new { @htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+                <div class="row my-2">
+                    @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "form-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.Password, new { @htmlAttributes = new { @class = "form-control", type = "password" } })
+                    </div>
+                </div>
+                <div class="row my-2">
+                    @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "form-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.Email, new { @htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+                <div class="form-group">
+
+                    <div class="offset-1 col-md-9 d-flex justify-content-end mt-4   ">
+                        <input type="submit" value="Kaydet" class="btn btn-success me-3" />
+                        @Html.ActionLink("Iptal", "ShowProfile", "Home", null, new { @class = "btn btn-dark" })
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-4">
+                &nbsp;
+            </div>
+        </div>
+
+        }
+    </div>
+</div>

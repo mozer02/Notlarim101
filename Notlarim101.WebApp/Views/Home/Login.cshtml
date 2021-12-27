@@ -1,0 +1,59 @@
+﻿@using Notlarim101.Entity.ValueObject
+@model LoginViewModel
+@{
+    ViewBag.Title = "Login";
+}
+<link href="~/Content/Login-RegisterStyle.css" rel="stylesheet" />
+
+@using (Html.BeginForm())
+{
+    <div class="logreg">
+        <main class="form-signin">
+            <form>
+                <img class="mb-4 rounded-circle" src="~/images/gora.jpg" alt="test" width="300" height="220">
+                <h1 class="h3 mb-3 fw-normal">Giris Formu</h1>
+                @Html.ValidationSummary(false)
+                
+                @if (ViewBag.SetLink != null)
+                {
+                    <a href="@ViewBag.SetLink" class="btn btn-primary">Activate</a>
+                }
+                
+
+                <div class="form-floating">
+                    @Html.TextBoxFor(model=>model.Username,new{@class="form-control", placeholder = "Kullanici Adi", id="floatingInput" })
+                    @*<input type="text" class="form-control" id="floatingInput" placeholder="Kullanici Adi">*@
+                    <label for="floatingInput">Kullanici Adi</label>
+                </div>
+                <div class="form-floating">
+                    @Html.TextBoxFor(model => model.Password, new { @class = "form-control", placeholder = "Sifre", id = "floatingPassword" ,type="password" })
+                    @*<input type="password" class="form-control" id="floatingPassword" placeholder="Sifre">*@
+                    <label for="floatingPassword">Sifre</label>
+                </div>
+
+                @*<div class="checkbox mb-3">
+                        <label>
+                            <input type="checkbox" value="remember-me"> Remember me
+                        </label>
+                    </div>*@
+                <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+                <p class="mt-5 mb-3 text-muted">&copy; 2017–2021</p>
+            </form>
+        </main>
+
+    </div>
+}
+
+
+
+<script src="~/Scripts/jquery-3.6.0.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("footer").hide();
+        $("header").hide();
+        $("#category2").hide();
+        $("#category3").addClass("col-md-12").removeClass("col-md-10");
+
+    });
+</script>

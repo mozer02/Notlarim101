@@ -1,0 +1,79 @@
+﻿@using Notlarim101.Entity
+@model List<Note>
+@{
+    ViewBag.Title = "Index";
+}
+
+<!-- Section-->
+<section class="py-5">
+    <div class="container-fluid px-4 px-lg-5 mt-5">
+        <div class="row gx-4 gx-lg-5 row-cols-1 row-cols-md-2 row-cols-xl-3 justify-content-center">
+            @{
+                int i = 0;
+            }
+
+            @foreach (Note note in Model)
+            {
+                <div class="col mb-5">
+                    <div class="card h-100">
+                        <!-- Product image-->
+                        <img class="card-img-top" src="https://picsum.photos/450/300?random=@i" alt="..." />
+                        <!-- Product details-->
+                        <div class="card-body py-4 px-1">
+                            <div class="text-center">
+                                <!-- Product name-->
+                                <h5 class="fw-bolder">@note.Title</h5>
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <i class="far fa-user"></i>@note.Owner.Username
+                                    </div>
+                                    <div>
+                                        <i class="far fa-clock"></i> @note.ModifiedOn.ToString("dd.MM.yy HH:mm")
+                                    </div>
+                                </div>
+                                <hr />
+                                <p class="card-text">
+                                    @if (string.IsNullOrEmpty(note.Text) == false && note.Text.Length > 70)
+                                    {
+                                        @(note.Text.Substring(0,70) +"...")
+                                    }
+                                    else if (string.IsNullOrEmpty(note.Text))
+                                    {
+                                        @("...")
+                                    }
+                                    else
+                                    {
+                                        @note.Text
+                                    }
+
+                                </p>
+                            </div>
+                        </div>
+                        <!-- Product actions-->
+                        @*<div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">View options</a></div>
+                    </div>*@
+                        <hr />
+                        <div class="bg-transparent d-flex justify-content-between">
+                            <p>
+                                <button type="button" class="btn btn-outline-light text-dark btn-sm">
+                                    <i class="bi-star text-danger"></i> @note.LikeCount
+                                </button>
+                            </p>
+                            <p>
+                                <button type="button" class="btn btn-outline-light text-dark btn-sm">
+                                    <i class="bi bi-chat-left-dots-fill text-danger"></i> Yorumlar
+                                </button>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                i++;
+            }
+
+
+
+
+        </div>
+    </div>
+</section>

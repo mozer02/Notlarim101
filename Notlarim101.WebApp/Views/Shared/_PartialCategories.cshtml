@@ -1,0 +1,28 @@
+﻿@using Notlarim101.BusinessLayer
+@using Notlarim101.Entity
+
+@{
+    CategoryManager cm = new CategoryManager();
+    List<Category> list = cm.GetCategories();
+}
+
+<div id="category1">
+    <p class="lead mt-5"><span class="fw-bolder">Kategoriler</span></p>
+    <div class="list-group">
+        <a href="@Url.Action("Index","Home")" class="list-group-item list-group-item-action active" aria-current="true">
+            <span><i class="fas fa-angle-double-right"></i></span>
+            Tumu
+        </a>
+
+        @foreach (Category cat in list)
+        {
+            //var id = @cat.Title;
+            <a href="/Home/ByCategoryTitle/@cat.Title" title="@cat.Description" class="list-group-item list-group-item-action">
+                <span><i class="fas fa-angle-double-right"></i></span>
+                @cat.Title
+            </a>
+        }
+    </div>
+
+</div>
+
