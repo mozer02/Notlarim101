@@ -16,6 +16,7 @@ namespace Notlarim101.Entity
         [Required,StringLength(2000)]
         public string Text { get; set; }
         public bool IsDraft { get; set; }
+        [ScaffoldColumn(false)]
         public int LikeCount { get; set; }
 
         

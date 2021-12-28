@@ -1,0 +1,16 @@
+﻿@helper LinkButton(string id = "", string url = "", string color = "", string addtionalClass = "", string title = "", string icon = "", string text = "")
+{
+    <a href="@url" id="@id" name="@title" class="btn btn-@color btn-sm @addtionalClass" title="@title"><i class="bi bi-pencil"></i>@text</a>
+}
+@helper LinkButton(string url = "", string color = "", string addtionalClass = "", string title = "", string icon = "", string text = "")
+{
+    <a href="@url" class="btn btn-@color btn-sm @addtionalClass" title="@title"><i class="@icon"></i>@text</a>
+}
+
+@helper Button(string type = "", string value = "", string color = "", string addtionalClass = "", string icon = "", string text = "")
+{
+    <button type="@type" value="@value" class="btn btn-@color @addtionalClass"><i class="@icon"></i> @text</button>
+}
+
+@*Helper Kullanımı*@
+

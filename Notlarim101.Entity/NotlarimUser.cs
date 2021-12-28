@@ -22,11 +22,11 @@ namespace Notlarim101.Entity
         public string Email { get; set; }
         [DisplayName("Şifre"), StringLength(100, ErrorMessage = "{0} alani max. {1} karakter olmalıdır."),Required]
         public string Password { get; set; }
-        [StringLength(30, ErrorMessage = "{0} alani max. {1} karakter olmalıdır.")]
+        [StringLength(30, ErrorMessage = "{0} alani max. {1} karakter olmalıdır."), ScaffoldColumn(false)]
         public string ProfileImageFilename { get; set; }
 
         public bool IsActive { get; set; }
-        [Required]
+        [Required, ScaffoldColumn(false)] //ScffoldColumn entity ile controller oluştururken kullanıcıya veriyi göstermez 
         public Guid ActivateGuid { get; set; }
         public bool IsAdmin { get; set; }
 

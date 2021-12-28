@@ -17,7 +17,7 @@
         @foreach (Category cat in list)
         {
             //var id = @cat.Title;
-            <a href="/Home/ByCategoryTitle/@cat.Id" title="@cat.Description" class="list-group-item list-group-item-action">
+            <a href="/Home/ByCategoryId/@cat.Id" title="@cat.Description" class="list-group-item list-group-item-action">
                 <span><i class="fas fa-angle-double-right"></i></span>
                 @cat.Title
             </a>

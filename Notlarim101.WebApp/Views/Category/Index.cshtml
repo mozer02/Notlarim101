@@ -1,9 +1,9 @@
-﻿@model IEnumerable<Notlarim101.Entity.Category>
+﻿@using Notlarim101.WebApp
+@model IEnumerable<Notlarim101.Entity.Category>
 
 @{
     ViewBag.Title = "Kategoriler";
 }
-
 <div class="row mt-5 mb-3">
 
     <div class="col-md-10 col-md-offset-1">
@@ -55,11 +55,14 @@
                             @Html.DisplayFor(modelItem => item.ModifiedUsername)
                         </td>
                         <td>
-                            <a href="/Category/Edit/@item.Id" class="btn btn-warning btn-sm" title="Guncelle"><i class="bi bi-pencil"></i></a>
+                            @Bootstrap.LinkButton("/Category/Edit/" + @item.Id, "warning", "btn-sm", "Guncelle", "bi bi-pencil", string.Empty)
+                            @*<a href="/Category/Edit/@item.Id" class="btn btn-warning btn-sm" title="Guncelle"><i class="bi bi-pencil"></i></a>*@
                             |
-                            <a href="/Category/Details/@item.Id" class="btn btn-info btn-sm" title="Detay"><i class="bi bi-search"></i></a>
+                            @Bootstrap.LinkButton("/Category/Details/" + @item.Id, "info", "btn-sm", "Detay", "bi bi-search", string.Empty)
+                            @*<a href="/Category/Details/@item.Id" class="btn btn-info btn-sm" title="Detay"><i class="bi bi-search"></i></a>*@
                             |
-                            <a href="/Category/Delete/@item.Id" class="btn btn-danger btn-sm" title="Sil"><i class="bi bi-trash"></i></a>
+                            @Bootstrap.LinkButton("/Category/Delete/" + @item.Id, "danger", "btn-sm", "Sil", "bi bi-trash", string.Empty)
+                            @*<a href="/Category/Delete/@item.Id" class="btn btn-danger btn-sm" title="Sil"><i class="bi bi-trash"></i></a>*@
                         </td>
                     </tr>
                 }
