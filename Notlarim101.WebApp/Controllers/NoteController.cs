@@ -15,13 +15,21 @@ namespace Notlarim101.WebApp.Controllers
     public class NoteController : Controller
     {
         private NoteManager nm = new NoteManager();
+        CategoryManager cm = new CategoryManager();
+        LikedManager lm = new LikedManager();
 
         public ActionResult Index()
         {
             var notes = nm.QList().Include("Category").Include("Owner").Where(
                 x => x.Owner.Id == CurrentSession.User.Id).OrderByDescending(
-                x => x.ModifiedOn);
-            return View(nm.List());
+                x => x.ModifiedOn).ToList();
+            return View(notes);
+        }
+        public ActionResult MyLikedNotes()
+        {
+            var notes = lm.QList().Include("LikedUser").Include("Note").Where(s => s.LikedUser.Id == CurrentSession.User.Id).Select(x => x.Note).Include("Category").Include("Owner").OrderByDescending(s => s.ModifiedOn).ToList();
+            var notes1 = lm.List(x => x.LikedUser.Id == CurrentSession.User.Id).Select(x => x.Note).ToList();
+            return View("Index", notes);
         }
 
         public ActionResult Details(int? id)
@@ -40,6 +48,7 @@ namespace Notlarim101.WebApp.Controllers
 
         public ActionResult Create()
         {
+            ViewBag.CategoryId = new SelectList(cm.List(), "Id", "Title");
             return View();
         }
 
@@ -47,14 +56,15 @@ namespace Notlarim101.WebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(Note note)
         {
+            ModelState.Remove("CreatedOn");
+            ModelState.Remove("ModifiedOn");
+            ModelState.Remove("ModifiedUserName");
             if (ModelState.IsValid)
             {
-                db.Notes.Add(note);
-                db.SaveChanges();
+                note.Owner = CurrentSession.User;
+                nm.Insert(note);
                 return RedirectToAction("Index");
             }
-
-            ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Title", note.CategoryId);
             return View(note);
         }
 
@@ -65,12 +75,12 @@ namespace Notlarim101.WebApp.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Note note = db.Notes.Find(id);
+            Note note =nm.Find(s => s.Id == id);
             if (note == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Title", note.CategoryId);
+            ViewBag.CategoryId = new SelectList(cm.List(), "Id", "Title", note.CategoryId);
             return View(note);
         }
 
@@ -78,13 +88,19 @@ namespace Notlarim101.WebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Note note)
         {
+            ModelState.Remove("CreatedOn");
+            ModelState.Remove("ModifiedOn");
+            ModelState.Remove("ModifiedUserName");
             if (ModelState.IsValid)
             {
-                db.Entry(note).State = EntityState.Modified;
-                db.SaveChanges();
+                Note dbNote = nm.Find(s => s.Id == note.Id);
+                dbNote.IsDraft = note.IsDraft;
+                dbNote.CategoryId = note.CategoryId;
+                dbNote.Text = note.Text;
+                dbNote.Title = note.Title;
                 return RedirectToAction("Index");
             }
-            ViewBag.CategoryId = new SelectList(db.Categories, "Id", "Title", note.CategoryId);
+            ViewBag.CategoryId = new SelectList(cm.List(), "Id", "Title", note.CategoryId);
             return View(note);
         }
 
@@ -94,7 +110,7 @@ namespace Notlarim101.WebApp.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Note note = db.Notes.Find(id);
+            Note note = nm.Find(s => s.Id == id);
             if (note == null)
             {
                 return HttpNotFound();
@@ -106,19 +122,9 @@ namespace Notlarim101.WebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Note note = db.Notes.Find(id);
-            db.Notes.Remove(note);
-            db.SaveChanges();
+            Note note = nm.Find(s => s.Id == id);
+            nm.Delete(note);
             return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
         }
     }
 }

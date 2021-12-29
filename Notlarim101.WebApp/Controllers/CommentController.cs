@@ -8,110 +8,120 @@ using System.Web;
 using System.Web.Mvc;
 using Notlarim101.BusinessLayer;
 using Notlarim101.Entity;
-
+using Notlarim101.WebApp.Models;
 
 namespace Notlarim101.WebApp.Controllers
 {
-    public class CategoryController : Controller
+    public class CommentController : Controller
     {
-        CategoryManager cm = new CategoryManager();
+        CommentManager cmm = new CommentManager();
+        NoteManager nm = new NoteManager();
+        // GET: Comment
         public ActionResult Index()
         {
-            return View(cm.List());
+            return View(cmm.List());
         }
 
-       
+        // GET: Comment/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Category category = cm.Find(s=>s.Id==id);
-            if (category == null)
+            Comment comment = cmm.Find(s => s.Id == id);
+            if (comment == null)
             {
                 return HttpNotFound();
             }
-            return View(category);
+            return View(comment);
         }
 
-    
+        // GET: Comment/Create
         public ActionResult Create()
         {
             return View();
         }
-
-        [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Category category)
+        public ActionResult Create(Comment comment, int? notId)
         {
             ModelState.Remove("CreatedOn");
             ModelState.Remove("ModifiedOn");
             ModelState.Remove("ModifiedUserName");
             if (ModelState.IsValid)
             {
-                cm.Insert(category);
+                if (notId == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Note note = nm.Find(s => s.Id == notId);
+                if (note == null)
+                {
+                    return new HttpNotFoundResult();
+                }
+                comment.Note = note;
+                comment.Owner = CurrentSession.User;
+                if (cmm.Insert(comment) > 0)
+                {
+                    return Json(new { result = true }, JsonRequestBehavior.AllowGet);
+                }
                 return RedirectToAction("Index");
             }
 
-            return View(category);
+            return Json(new { result = false }, JsonRequestBehavior.AllowGet);
         }
 
+        // GET: Comment/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Category category = cm.Find(s => s.Id == id);
-            if (category == null)
+            Comment comment = cmm.Find(s => s.Id == id);
+            if (comment == null)
             {
                 return HttpNotFound();
             }
-            return View(category);
+            return View(comment);
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Category category)
+        public ActionResult Edit(Comment comment)
         {
-            //ModelStade olan yapılarda kullanılır.
-            ModelState.Remove("CreatedOn");
-            ModelState.Remove("ModifiedOn");
-            ModelState.Remove("ModifiedUserName");
             if (ModelState.IsValid)
             {
-                Category cat = cm.Find(s => s.Id == category.Id);
-                cat.Title = category.Title;
-                cat.Description = category.Description;
-                cm.Update(cat);
+                db.Entry(comment).State = EntityState.Modified;
+                db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(category);
+            return View(comment);
         }
 
+        // GET: Comment/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Category category = cm.Find(s=>s.Id==id);
-            if (category == null)
+            Comment comment = db.Comments.Find(id);
+            if (comment == null)
             {
                 return HttpNotFound();
             }
-            return View(category);
+            return View(comment);
         }
 
+        // POST: Comment/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Category category = cm.Find(s=>s.Id==id);
-            cm.Delete(category);
+            Comment comment = db.Comments.Find(id);
+            db.Comments.Remove(comment);
+            db.SaveChanges();
             return RedirectToAction("Index");
         }
-       
     }
 }
