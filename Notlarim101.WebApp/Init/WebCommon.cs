@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using Notlarim101.Common;
 using Notlarim101.Entity;
+using Notlarim101.WebApp.Models;
 
 namespace Notlarim101.WebApp.Init
 {
@@ -11,9 +12,9 @@ namespace Notlarim101.WebApp.Init
     {
         public string GetCurrentUsername()
         {
-            if (HttpContext.Current.Session["login"]!=null)
+            if (CurrentSession.User !=null)
             {
-                NotlarimUser user=HttpContext.Current.Session["login"] as NotlarimUser;
+                NotlarimUser user= CurrentSession.User as NotlarimUser;
                 return user.Username;
             }
 

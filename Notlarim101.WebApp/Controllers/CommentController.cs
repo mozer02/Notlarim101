@@ -91,8 +91,7 @@ namespace Notlarim101.WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(comment).State = EntityState.Modified;
-                db.SaveChanges();
+                
                 return RedirectToAction("Index");
             }
             return View(comment);
@@ -105,12 +104,8 @@ namespace Notlarim101.WebApp.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Comment comment = db.Comments.Find(id);
-            if (comment == null)
-            {
-                return HttpNotFound();
-            }
-            return View(comment);
+            
+            return View();
         }
 
         // POST: Comment/Delete/5
@@ -118,9 +113,7 @@ namespace Notlarim101.WebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Comment comment = db.Comments.Find(id);
-            db.Comments.Remove(comment);
-            db.SaveChanges();
+            
             return RedirectToAction("Index");
         }
     }
